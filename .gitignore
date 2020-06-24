@@ -1,0 +1,10 @@
+# Core
+install.php
+sitemap.xml
+rss.xml
+
+# For core development
+_data/*
+
+# For production
+# _data/*.json

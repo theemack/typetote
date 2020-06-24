@@ -1,0 +1,69 @@
+<?php
+  include ('_app/Entity.php');
+  include ('_app/SiteInfo.php');
+
+
+  if (is_file('_data/settings/site_info.json')) {
+    header('Location:' . SiteInfo::baseUrl());
+  }
+
+  // On form submit
+  if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
+    $site_info_data = $_POST;
+  
+    $site_info = new Entity();
+    $site_info_data['admin_email'] = strtolower($_POST['admin_email']);
+    $site_info_data['blog_name'] = 'Blog';
+    $site_info_data['blog_path'] = 'blog';
+    $site_info_data['front_theme'] = 'motek';
+    $site_info->saveSetting('site_info.json', $site_info_data);
+
+    // Create menu.
+    $menu_data[0]['name'] = 'Home';
+    $menu_data[0]['path'] = '/';
+    $menu_data[0]['weight'] = '0';
+    $menu_data[1]['name'] = 'Blog';
+    $menu_data[1]['path'] = 'blog';
+    $menu_data[1]['weight'] = '1';
+    $site_info->saveSetting('menu.json', $menu_data);
+    header('Location:' . SiteInfo::baseUrl());
+  }
+?>
+
+<html>
+<head>
+  <title>Welcome to TypeTote</title>
+  <link rel="stylesheet" type="text/css" href="_modules/admin/_theme/css/style.css">
+</head>
+<body>
+
+<div class="install_wrapper">
+  <div class="center">
+    <img class="emblem" src="_modules/admin/img/tt-emb.svg">
+    <h1>Welcome!</h1>
+    <p>Simply fill out the following fields and press install to get started.</p>
+  </div>
+  <form method="post" action="" enctype="multipart/form-data">
+      <label for="site_name">Site Name:</label>
+      <input type="text" name="site_name" placeholder="Site Name"required>
+      <br>
+      <label for="site_description">Site Description:</label>
+      <textarea name="site_description" placeholder="Site Description"></textarea required>
+      <br>
+      <label for="admin_email">Admin Email:</label>
+      <input type="text" placeholder="Admin Email" name="admin_email" required>
+      <br>
+
+      <label for="sec_key_1">Favorite food?</label>
+      <input id="sec_key_1" type="text" name="sec_key_1" placeholder="Your Response." required>
+      
+      <label for="sec_key_2">What is the cutest animal?</label>
+      <input id="sec_key_2" type="text" name="sec_key_2" placeholder="Your Response." required>
+      
+      <input type="submit" value="Install">
+  </form>
+  <footer>Thank you for choosing <a href="https://typetote.com" target="_blank">TypeTote</a>!</footer>
+</div>
+
+</body>
+</html>
