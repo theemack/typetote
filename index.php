@@ -54,7 +54,10 @@ if ((http_response_code() == '404')) {
 // Dev Mode.
 if ($dev_mode == 1) {
   
-  echo '<style>
+  if(strpos($_SERVER['REQUEST_URI'], 'login') !== false){
+
+    $dev_msg = 'Development mode is on! Change it in the index.php file before going to production.';
+    echo '<style>
     .dev-mode {
       position: fixed;
       display: block;
@@ -67,10 +70,8 @@ if ($dev_mode == 1) {
       color: #AC4319;
       font-size: medium;
     }
-  </style>';
-  
-  $dev_msg = 'Development mode is on! Change it in the index.php file before going to production.';
-  if(strpos($_SERVER['REQUEST_URI'], 'login') !== false){
+    </style>';
+
     if ($_SESSION['auth']['login_token']) {
       echo '<div class="dev-mode">';
       echo '<div>Login Code:<br>' . $_SESSION['auth']['login_token'] . '</div>';
