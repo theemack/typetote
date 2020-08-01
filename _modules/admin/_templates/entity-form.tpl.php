@@ -54,8 +54,68 @@
         <label for="tags">Tags:</label> 
         <input id="tags" type="text" name="entity[meta][tags]" value="<?php if (isset($page_data['meta']['tags'])) { echo $page_data['meta']['tags']; } ?>">
 
+        <?php
+          // render list of avalible tags.
+          $tag_data = new Entity();
+          $tags = $tag_data->readDataFile('_data/manifests/content_manifests.json');
+
+          $tag_list = array();
+          foreach ($tags as $tag) {
+            $t = $tag['tags'];
+            
+            // Remove empty
+            if ($tag['tags'] == '') {
+              continue;
+            }
+
+            // If multiple tags are found, break them up.
+            if (strpos($tag['tags'], ',') !== false) {
+
+              $sub_tags = explode(',' ,$tag['tags']);
+              foreach ($sub_tags as $sub_tag) {
+                $tag_list[] = str_replace(' ', '', $sub_tag);
+              }
+
+            } else {
+              $tag_list[] = $t;
+            }
+          }
+
+          $tag_list = array_unique($tag_list);
+          echo '<ul class="existing_tags">';
+          foreach ($tag_list as $key => $value) {
+            echo '<li id="tag_'. $key .'" onClick="tagClick(this.id)"><i class="fa fa-tag" aria-hidden="true"></i> ' . $value . '</li>';
+          }
+          echo '</ul>';
+        ?>
+        
         <label for="body">Summery:</label> 
         <textarea id="body" name="entity[summery]"><?php if (isset($page_data['summery'])) { echo $page_data['summery']; } ?></textarea>
+
+        <details>
+          <summary>Featured Image</summary>
+          
+          <?php if (isset($page_data['meta']['featured_image']) && $page_data['meta']['featured_image'] !== '') { ?>
+            <div class="hide" id="featured_image-btn" onclick="imageUpload('featured_image')"><i class="fas fa-image"></i></div>
+          <?php } else { ?>
+            <div id="featured_image-btn" onclick="imageUpload('featured_image')"><i class="fas fa-image"></i></div>
+          <?php } ?>
+
+          <div id="featured_image-preview">
+            <?php if (isset($page_data['meta']['featured_image'])) { ?> 
+              <img src="<?php echo $page_data['meta']['featured_image'];?>">  
+            <?php } ?>
+          </div>
+
+          <?php if (isset($page_data['meta']['featured_image']) && $page_data['meta']['featured_image'] !== '') { ?>
+            <div id="featured_image-remove" onclick="removeFeaturedImage();"><i class="fas fa-times"></i> Remove</div>
+          <?php } else { ?>
+            <div class="hide" id="featured_image-remove" onclick="removeFeaturedImage();"><i class="fas fa-times"></i> Remove</div>
+          <?php } ?>
+          
+          <input id="featured_image-src" type="hidden" name="entity[meta][featured_image]" value="<?php if (isset($page_data['meta']['featured_image'])) { echo $page_data['meta']['featured_image']; } ?>">
+        </details>
+        <br>
 
         <details>
           <summary>Metadata</summary>
