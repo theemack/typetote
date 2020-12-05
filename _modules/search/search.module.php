@@ -1,19 +1,5 @@
 <?php
 
-// If user goes to search. 
-// $search = new Route();
-// $search->setPath('search', function() {
-
-//   $template = new Template();
-//   $page_content = $template->renderTemplateFile('search', 'search-page.tpl.php');
-
-//   $site_info = new SiteInfo;
-//   $site_data = $site_info->getSiteData();
-//   $page_data['title'] = 'Search';
-
-//   include ($template->loadTheme('main'));
-// });
-
 $search_results = new Route();
 $search_results->setPath('search', function() {
 
@@ -39,17 +25,22 @@ $search_results->setPath('search', function() {
 
   $search_results = array();
   $term = strtolower($query->getQuery('q'));
-  foreach($search_array as $result){
-    if (strpos($result['title'], $term) !== false or strpos($result['body'], $term) !== false){
 
-      $search_results[] = $result;
-      $page_data['status'] = 'yes';
+  if (!empty($term)) {
+    foreach($search_array as $result){
 
-    } else {
-
-      $page_data['status'] = 'no';
+      if (strpos($result['title'], $term) !== false or strpos($result['body'], $term) !== false){
+  
+        $search_results[] = $result;
+        $page_data['status'] = 'yes';
+  
+      } else {
+  
+        $page_data['status'] = 'no';
+      }
     }
   }
+ 
 
   // If $search_results is not empty, return as $page_data for template rendering.
   $page_data['query'] = $query->getQuery('q');
@@ -62,12 +53,16 @@ $search_results->setPath('search', function() {
 
   $site_info = new SiteInfo;
   $site_data = $site_info->getSiteData();
-  $page_data['title'] = $page_data['query'];
+  if ($page_data['query']) {
+    $page_data['title'] = $page_data['query'];
+  }
+  else {
+    $page_data['title'] = 'Search';
+  }
   $page_data['pagination_num'] = $query->getQuery('pg');
   $page_data['base_url'] = $template->baseUrl() . 'search?q=' . $query->getQuery('q');
 
-
-  $page_content = $template->renderTemplateFile('_extensions/search', 'search-page.tpl.php');
+  $page_content = $template->renderTemplateFile('_modules/search', 'search-page.tpl.php');
   include ($template->loadTheme('main'));
 
 });

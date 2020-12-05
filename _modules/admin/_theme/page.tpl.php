@@ -5,7 +5,14 @@
 </head>
 <body>
 
-<?php if ($GLOBALS['utility_page'] == 'no') { ?>  
+<?php 
+
+// echo '<pre>';
+// print_r($_SESSION['auth']); 
+// echo '</pre>';
+?>
+
+<?php if (empty($page_data['utility_page']) or $page_data['utility_page'] !== 'yes') { ?>  
 <div class="admin-well">
   <div class="admin-col">
     <a href="<?php echo SiteInfo::baseUrl(); ?>admin/"><img class="tt-logo-side" src="<?php echo SiteInfo::baseUrl();?>_modules/admin/img/tt-emb.svg"></a>
@@ -32,9 +39,16 @@
       <br>
       <hr>
       Thank you for using <a href="https://typetote.com" target="_blank">TypeTote</a>! You Rock!. <i class="far fa-smile-beam"></i>
+      <br>
+      <br>
+      Version: <b><?php include ('version.txt'); ?></b>
     </div>
 </div>
+
 <?php } else { ?>
+  
+  <?php include ($page_content) ?>
+
   <style>
     .admin-col, .admin-utility, .cc, pre {
       display: none
@@ -52,7 +66,7 @@
       margin: 0;
     }
   </style>
-  <?php include ($page_content) ?>
 <?php } ?>
+
 </body>
 </html>

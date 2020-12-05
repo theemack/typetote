@@ -12,21 +12,28 @@ $admin_content->setPath('admin', function() {
   $page_data['pagination_num'] = $query->getQuery('pg');
   $page_data['base_url'] = $template->baseUrl() . 'admin?q=' . $query->getQuery('q');
 
-
   if ($query->getQuery('q') == 'posts') {
     
-    $page_data['items'] = $content->paginate($content->renderEntityList('_data/manifests/content_manifests.json', $options = array('type' => 'post')));
     $page_data['sort'] = 'Post';
+    if (is_file('_data/manifests/content_manifests.json')) {
+      $options = array('type' => 'post');
+      $page_data['items'] = $content->paginate($content->renderEntityList('_data/manifests/content_manifests.json', $options));
+    }
 
   } else if ($query->getQuery('q') == 'pages') {
     
-    $page_data['items'] = $content->paginate($content->renderEntityList('_data/manifests/content_manifests.json', $options = array('type' => 'page')));
     $page_data['sort'] = 'Page';
+    if (is_file('_data/manifests/content_manifests.json')) {
+      $options = array('type' => 'page');
+      $page_data['items'] = $content->paginate($content->renderEntityList('_data/manifests/content_manifests.json', $options)); 
+    }
 
   } else if ($query->getQuery('q') == 'blocks') {
-  
-    $page_data['items'] = $content->paginate($content->renderEntityList('_data/manifests/block_manifests.json'));
+    
     $page_data['sort'] = 'Block';
+    if (is_file('_data/manifests/block_manifests.json')) {
+      $page_data['items'] = $content->paginate($content->renderEntityList('_data/manifests/block_manifests.json'));
+    }
   
   } else {
   
@@ -35,6 +42,7 @@ $admin_content->setPath('admin', function() {
 
   }
 
+  $page_data['utility_page'] = 'no';
   include ($template->loadTheme('admin'));
 
 });
@@ -168,7 +176,7 @@ $admin_menus->setPath('admin/media', function() {
 
 });
 
-// Embeded media browser
+// Media browser
 $file_upload = new Route();
 $file_upload->setPath('admin/media/browser', function() {
 
@@ -179,8 +187,8 @@ $file_upload->setPath('admin/media/browser', function() {
   $page_data['files'] = $file->browse_files();
   $page_data['url'] = $template->baseUrl();
   $page_data['embeded'] = 'yes';
-  $GLOBALS['utility_page'] = 'yes';
 
+  $page_data['utility_page'] = 'yes';
   include ($template->loadTheme('admin'));
 });
 
@@ -195,9 +203,10 @@ $file_upload->setPath('admin/media/upload', function() {
 
   $template = new Template();
   $template->renderModuleJs('admin/js/file.js');
-  $GLOBALS['utility_page'] = 'yes';
+  $page_data['utility_page'] = 'yes';
   $page_content = $template->renderTemplateFile('_modules/admin', 'media-upload.tpl.php');
 
+  $page_data['utility_page'] = 'yes';
   include ($template->loadTheme('admin'));
 });
 
@@ -213,6 +222,8 @@ $admin_settings->setPath('admin/settings', function() {
     $site_info_data['admin_email'] = strtolower($_POST['admin_email']);
     $site_info_data['blog_name'] = $_POST['blog_name'];
     $blog_path = strtolower($site_info_data['blog_name']);
+    $site_info_data['sec_key_1'] = password_hash($_POST['sec_key_1'], PASSWORD_DEFAULT);
+    $site_info_data['sec_key_2'] = password_hash($_POST['sec_key_2'], PASSWORD_DEFAULT);
     $site_info_data['blog_path'] = str_replace(' ', '-', $blog_path);
     $site_info->saveSetting('site_info.json', $site_info_data);
   }
@@ -242,5 +253,6 @@ $site_banner->setPath('admin/site-banner', function() {
   $template->renderModuleJs('admin/js/file.js');
   include ($template->loadTheme('admin'));
 });
+
 
 ?>

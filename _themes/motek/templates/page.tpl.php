@@ -34,7 +34,7 @@
   <main>
     
     <!-- Remove this if you decide to use page--front.tpl.php  -->
-    <?php if ($page_data['template_type'] == 'front') { ?>
+    <?php if (isset($page_data['template_type']) && $page_data['template_type'] == 'front') { ?>
       <h1>Welcome to <?php echo $site_data['site_name']; ?></h1>
       <?php  
         $content = new Entity();
@@ -44,7 +44,7 @@
           'category' => $site_data['blog_path'],
         );
         $content_list = $content->renderEntityList('_data/manifests/content_manifests.json', $options);
-        $page_data['list'] = $content->paginate($content_list);
+        $page_data['items'] = $content->paginate($content_list);
         render_templateList($page_data); 
       ?>
     <?php } ?>
@@ -53,12 +53,12 @@
     <?php if (isset($page_content)) { include($page_content); } ?>
   
     <!-- This line renders the content template, i.e. a post or page. -->
-    <?php if ($page_data['template_type'] == 'content') { ?>
+    <?php if (isset($page_data['template_type']) && $page_data['template_type'] == 'content') { ?>
       <?php render_templateContent($page_data); ?>
     <?php } ?>
 
     <!-- This line renders a list page, i.e. blog, tag or category -->
-    <?php if ($page_data['template_type'] == 'list') { ?>
+    <?php if (isset($page_data['template_type']) && $page_data['template_type'] == 'list') { ?>
       <?php  render_templateList($page_data); ?>
     <?php } ?>
 

@@ -43,7 +43,7 @@ if (!empty($manifest)){
       // This is for the admin bar to call the data.
       $GLOBALS['entity_id'] = $item['entity_id'];
 
-      $override_template = 'page--data-' . $page_data['meta']['path'] . '.tpl.php';
+      $override_template = 'page--' . $page_data['meta']['path'] . '.tpl.php';
       $override_file = '_themes/' .   $site_data['front_theme'] . '/templates/' . $override_template;
 
       if (is_file($override_file)) {
@@ -124,7 +124,7 @@ $blog->setPath($site_data['blog_path'], function() {
     'category' => $site_data['blog_path'],
   );
   $content_list = $content->renderEntityList('_data/manifests/content_manifests.json', $options);
-  $page_data['list'] = $content->paginate($content_list);
+  $page_data['items'] = $content->paginate($content_list);
   $page_data['template_type'] = 'list';
   $page_data['title'] = ucfirst($site_data['blog_name']);
   $page_data['pagination_num'] = $query->getQuery('pg');
