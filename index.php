@@ -16,12 +16,13 @@ if (is_file('_data/settings/site_info.json')) {
   // Load Site Info:
   $site_info = new SiteInfo();
   $site_data = $site_info->getSiteData();
+  $session_name = md5($site_data['site_name']);
 
   // Boostrap modules & Hookss
   include_once('_app/_bootstrap.php');
 
   // Show admin bar to the top of the page when user is logged in.
-  if (isset($_SESSION['template']['admin_bar']) && $_SESSION['template']['admin_bar'] == 'yes') {
+  if (isset($_SESSION[$session_name]['template']['admin_bar']) && $_SESSION[$session_name]['template']['admin_bar'] == 'yes') {
     if (strpos($_SERVER['REQUEST_URI'], 'admin') == false) {  
       $admin_bar_data = new Entity();
       // Value defiend in core.module.php
@@ -29,6 +30,7 @@ if (is_file('_data/settings/site_info.json')) {
       include('_modules/admin/_templates/admin-bar.tpl.php');
     }
   }
+
 
 } else {
   
@@ -57,6 +59,7 @@ if ((http_response_code() == '404')) {
 
 // Dev Mode, to enable create a file called dev.php in the website root.
 if (file_exists('dev.php')) {
+
   if(strpos($_SERVER['REQUEST_URI'], 'login') !== false){
 
     $dev_msg = 'Development mode is on! Remove the dev.php file before going to production.';
@@ -75,9 +78,9 @@ if (file_exists('dev.php')) {
     }
     </style>';
   
-    if (isset($_SESSION['auth']['token']) && $_SESSION['auth']['token']) {
+    if (isset($_SESSION[$session_name]['auth']['token'])) {
       echo '<div class="dev-mode">';
-      echo '<div>Login Code:<br>' . $_SESSION['auth']['token'] . '</div>';
+      echo '<div>Login Code:<br>' . $_SESSION[$session_name]['auth']['token'] . '</div>';
       echo '<div>' . $dev_msg . '</div></div>';
     }
   }
