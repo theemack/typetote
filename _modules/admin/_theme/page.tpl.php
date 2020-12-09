@@ -5,7 +5,7 @@
 </head>
 <body>
 
-<?php if (empty($page_data['utility_page']) or $page_data['utility_page'] !== 'yes') { ?>  
+<?php if (empty($page_data['utility_page']) or $page_data['utility_page'] !== 'yes') { ?>
 <div class="admin-well">
   <div class="admin-col">
     <a href="<?php echo SiteInfo::baseUrl(); ?>admin/"><img class="tt-logo-side" src="<?php echo SiteInfo::baseUrl();?>_modules/admin/img/tt-emb.svg"></a>
@@ -17,6 +17,9 @@
         <li><a href="<?php echo SiteInfo::baseUrl(); ?>admin/category">Categories <i class="fas fa-book"></i></a></li>
         <li><a href="<?php echo SiteInfo::baseUrl(); ?>admin/menu">Menu <i class="fas fa-link"></i></a></li>
         <li><a href="<?php echo SiteInfo::baseUrl(); ?>admin/site-banner"">Site Banner<i class="fas fa-bullhorn"></i></a></li>
+        <?php if (checkIfAdmin()) { ?>
+          <li><a href="<?php echo SiteInfo::baseUrl(); ?>admin/users">Users <i class="fas fa-user-friends"></i></a></li>
+        <?php } ?>
         <li><a href="<?php echo SiteInfo::baseUrl(); ?>admin/settings">Settings <i class="fas fa-cog"></i></a></li>
         <hr>
         <li><a href="<?php echo SiteInfo::baseUrl(); ?>">Back to Site <i class="fas fa-caret-square-left"></i></a></li>
@@ -36,6 +39,8 @@
       <br>
       Version: <b><?php include ('version.txt'); ?></b>
     </div>
+  
+  <?php include('_modules/admin/_templates/session-notice.tpl.php'); ?>
 </div>
 
 <?php } else { ?>
