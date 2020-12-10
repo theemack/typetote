@@ -88,7 +88,7 @@ if (is_array($categories)) {
         'category' => $path['path'],
       );
       $content_list = $content->renderEntityList('_data/manifests/content_manifests.json', $options);
-      $page_data['list'] = $content->paginate($content_list);
+      $page_data['items'] = $content->paginate($content_list);
       $page_data['template_type'] = 'list';
       $page_data['title'] = ucfirst($path['name']);
       $page_data['pagination_num'] = $query->getQuery('pg');
