@@ -26,7 +26,7 @@ if (is_file('_data/settings/site_info.json')) {
 
     $page_data['status'] = '404';
     $override_template = 'page--404.tpl.php';
-    $override_file = '_themes/' .   $site_data['front_theme'] . '/' . $override_template;
+    $override_file = $site_data['front_theme'] . '/' . $override_template;
     if (is_file($override_file)) {
       $page_content = $override_file;
     }
@@ -37,6 +37,10 @@ if (is_file('_data/settings/site_info.json')) {
 
   // Dev Mode, to enable create a file called dev.php in the website root.
   if (file_exists('dev.php')) {
+
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
 
     if(strpos($_SERVER['REQUEST_URI'], 'login') !== false){
 
@@ -69,7 +73,9 @@ if (is_file('_data/settings/site_info.json')) {
     if (strpos($_SERVER['REQUEST_URI'], 'admin') == false) {  
       $admin_bar_data = new Entity();
       // Value defiend in core.module.php
-      $page_data = $admin_bar_data->loadEntity($GLOBALS['entity_id']);
+      if (isset($GLOBALS['entity_id'])) {
+        $page_data = $admin_bar_data->loadEntity($GLOBALS['entity_id']);
+      }
       include('_modules/admin/_templates/admin-bar.tpl.php');
     }
   }

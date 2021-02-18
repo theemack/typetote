@@ -3,27 +3,38 @@
 <head>
 <title><?php render_siteTitle($page_data); ?></title>
   <meta name="description" content="<?php render_siteDescription($page_data); ?>">
-  <?php render_themeCSS('tundra'); ?>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
+  <?php render_themeCSS(); ?>
+  <link href="https://fonts.googleapis.com/css?family=Libre+Baskerville:700|Nunito" rel="stylesheet">
   <?php render_templateMetaHead($page_data); ?>
 </head>
 <body>
 
-<?php #  Renders the site banner. ?>
+<!-- Renders the site banner. -->
 <?php render_siteBanner()?>
 
-<div class="menu">
-  <a href="<?php render_baseUrl(); ?>" class="logo"><?php echo $site_data['site_name']; ?></a>
-    <div id="menu-icon" onclick="slideToggle()">☰</div>
-    <div id="menu-well">
-      <nav><?php render_siteMenu(); ?></nav>
+<nav>
+  <div class="container">
+    <div class="nav-well">
+      <div>
+        <a href="" class="logo"><?php echo $site_data['site_name']; ?></a>
+      </div>
+      <div class="menu">
+        <div id="menu-icon" onclick="slideToggle()">☰</div>
+        <div id="menu-well">
+          <?php render_siteMenu(); ?>
+          <a href="<?php render_baseUrl(); ?>search" class="search-icon">⌕</a>
+        </div>
+      </div>
     </div>
   </div>
-</div>
+</nav>
 
-<main>
-  <!-- Remove this if you decide to use page--front.tpl.php  -->
-  <?php if (isset($page_data['template_type']) && $page_data['template_type'] == 'front') { ?>
+<div class="well">
+<div class="container">
+  <main>
+    
+    <!-- Remove this if you decide to use page--front.tpl.php  -->
+    <?php if (isset($page_data['template_type']) && $page_data['template_type'] == 'front') { ?>
       <h1>Welcome to <?php echo $site_data['site_name']; ?></h1>
       <?php  
         $content = new Entity();
@@ -56,17 +67,20 @@
       <h1>Gratz. You Broke it!</h1>
       <p>It looks like something terrible has happened, and this page no longer exists.</p>
     <?php } } ?>
-</main>
 
-<footer>
-  <div class="container">
+  </main>
+
+  <footer>
     <div class="cc">
-      ©<?php echo date('Y') . ' '?><a href="<?php render_baseUrl(); ?>"><?php echo $site_data['site_name']; ?></a>.
+      <span class="l">©<?php echo date('Y') . ' ' .$site_data['site_name']; ?></span><br>
+      Proudly built with <a href="https://typetote.com">TypeTote</a>.
     </div>
+  </footer>
   </div>
-</footer>
+</div>
 
+<div class="wave"></div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<?php render_themeJS('tundra'); ?>
+<?php render_themeJS(); ?>
 </body>
 </html>
