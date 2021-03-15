@@ -4,5 +4,5 @@
 	"description": "The Straightforward Content Management System.",
 	"keywords": ["cms", "flat-file", "php", "headless-cms"],
 	"homepage": "https://typetote.com",
-	"license": "GNU"
+	"license": "AGPL-3.0-or-later"
 }
