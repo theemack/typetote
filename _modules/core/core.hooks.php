@@ -35,7 +35,7 @@ function render_templateMetaHead($page_data){
 function render_themeJS() {
 
   $theme = (array)SiteInfo::getSiteData()['front_theme'];
-  $file = $theme[0] .'/css/script.js';
+  $file = $theme[0] .'/js/script.js';
   
   if (file_exists($file)) {
     echo '<script src="' . SiteInfo::baseUrl(). $file .'" type="text/javascript"></script>';
