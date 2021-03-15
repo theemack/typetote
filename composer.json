@@ -1,16 +1,8 @@
 {
-    "name": "digitalconfection/typetote",
-    "type": "library",
-    "description": "The Straightforward Content Management System.",
-    "keywords": ["cms","flat-file","php","headless-cms"],
-    "homepage": "https://typetote.com",
-    "license": "GNU",
-    "authors": [
-        {
-            "name": "Misha V.",
-            "email": "info@digitalconfection.com",
-            "homepage": "http://digitalconfection.com",
-            "role": "Developer"
-        }
-    ],
+	"name": "digitalconfection/typetote",
+	"type": "library",
+	"description": "The Straightforward Content Management System.",
+	"keywords": ["cms", "flat-file", "php", "headless-cms"],
+	"homepage": "https://typetote.com",
+	"license": "GNU"
 }
