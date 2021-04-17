@@ -107,8 +107,8 @@ function render_siteTitle($page_data ) {
 function render_siteDescription($page_data) {
   global $site_data;
   $path = new Route();
-  if(isset($page_data['summery'])){ 
-    echo $page_data['summery']; 
+  if(isset($page_data['summary'])){ 
+    echo $page_data['summary']; 
   }
   else if ($path->getPath() == $site_data['blog_path'] && $site_data['blog_description'] !== '') {
     echo $site_data['blog_description']; 

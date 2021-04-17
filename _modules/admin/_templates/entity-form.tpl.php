@@ -92,8 +92,8 @@
           }
         ?>
         
-        <label for="body">Summery:</label> 
-        <textarea id="body" name="entity[summery]"><?php if (isset($page_data['summery'])) { echo $page_data['summery']; } ?></textarea>
+        <label for="summary">Summary:</label> 
+        <textarea id="summary" name="entity[summary]"><?php if (isset($page_data['summary'])) { echo $page_data['summary']; } ?></textarea>
 
         <details>
           <summary>Featured Image</summary>
