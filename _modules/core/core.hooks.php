@@ -6,7 +6,7 @@
  */
 
 // Render a list of content. Used for summaries.
-function render_templateList($page_data, $no_title = null) {
+function render_templateList($page_data, $no_title = null, $no_description = null) {
   include('_templates/template-list.tpl.php');
 }
 
@@ -41,7 +41,6 @@ function render_themeJS() {
   
   if (file_exists($file)) {
     echo '<script src="' . SiteInfo::baseUrl(). $file .'" type="text/javascript"></script>';
-    
   }
 }
 
@@ -90,17 +89,33 @@ function renderTags($tag_data) {
 
       // For last item remove comma.
       if ($tag == end( $tag_objects )) {
-        echo '<li><a href="' . SiteInfo::baseUrl() .'tags?q='. $tag . '">' . ucfirst($tag) . '</a></li>';
+        echo '<li><a href="' . SiteInfo::baseUrl() .'tags?q='. $tag . '">' . Template::decodeTag($tag) . '</a></li>';
       } else {
-        echo '<li><a href="' . SiteInfo::baseUrl() .'tags?q='. $tag . '">' . ucfirst($tag) . '</a>,</li>';
+        echo '<li><a href="' . SiteInfo::baseUrl() .'tags?q='. $tag . '">' . Template::decodeTag($tag) . '</a>,</li>';
       }
     }
     echo '</ul></div>';
   }
 }
 
+// Function to render a category link.
+function renderCategoryLink($data) {
+  echo '<div class="category"><a href="' . SiteInfo::baseUrl() . $data . '">' . Template::decodeTag($data) . '</a></div>';
+}
+
+function renderBodyClass() {
+  $path = new Route();
+
+  if ($path->getPath() == '') {
+    $class = 'home';
+  } else {
+    $class = str_replace('/', '-', $path->getPath());
+  }
+  return $class;
+}
+
 // Render title for template.
-function render_siteTitle($page_data ) {
+function render_siteTitle($page_data) {
   global $site_data;
   if(isset($page_data['title'])) { echo $page_data['title'] . ' - '; } else { if( isset($site_data['site_slogan'])){ echo $site_data['site_slogan'] . ' - '; } }?><?php echo $site_data['site_name'];
 }
@@ -112,7 +127,12 @@ function render_siteDescription($page_data) {
   if(isset($page_data['summary'])){ 
     echo $page_data['summary']; 
   }
-  else if ($path->getPath() == $site_data['blog_path'] && $site_data['blog_description'] !== '') {
+
+  else if (!empty($page_data['cat_description'])) {
+    echo $page_data['cat_description']; 
+  }
+
+  else if ($path->getPath() == $site_data['blog_path'] && !empty($site_data['blog_description'])) {
     echo $site_data['blog_description']; 
   }
   else { echo $site_data['site_description']; }
@@ -140,7 +160,6 @@ function render_ga() {
 // Render Breadcrumbs
 function render_breadcrumbs($homelink = null) {
   
-  global $page_data;
   $site_info =  new SiteInfo();
   $dir = basename(dirname($_SERVER['PHP_SELF']));
 
@@ -161,10 +180,10 @@ function render_breadcrumbs($homelink = null) {
   }
 
   $links[0] = '';
-  $front_page = new Route();
+  $page = new Route();
 
   // Only show if not on homepage.
-  if ($front_page->getPath() !== '' xor http_response_code() == '404') {
+  if ($page->getPath() !== '' xor http_response_code() == '404' xor strpos($page->getPath(), 'tag') !== false) {
 
     echo '<br><div class="breadcrumbs"><ol>';
       foreach ($links as $key => $link) {
@@ -174,6 +193,7 @@ function render_breadcrumbs($homelink = null) {
         if ($key == 0) {
           echo '<li><a href="'.  $site_info->baseUrl() . '">'. ucfirst($first_breadcrumb) .'</a></li>';
         } else if ($x === $length) {
+
           echo '<li>' . ucwords($link_text) . '</li>';
         } 
         else {

@@ -34,7 +34,6 @@ if (!empty($manifest)){
   {
     if ($path->getPath() == $item['path'] && $path->getPath() !== '')
     {
-
       // Get and build $page_data array.
       $page_data = $content->loadEntity($item['entity_id']);
       $page_data['template_type'] = 'content';
@@ -42,24 +41,32 @@ if (!empty($manifest)){
       // This is for the admin bar to call the data.
       if ($item['entity_id']) {
         $GLOBALS['entity_id'] = $item['entity_id'];
-
       }
 
-      // Here we do a check, if there is a page type we show that only if there is no path override.
+      // Here we do a check, if there an override file in the template.
+      $override_page_by_path = 'page--' . $page_data['meta']['path'] . '.tpl.php';
+      $override_page_by_category = 'page--category--' . $page_data['meta']['category'] . '.tpl.php';
+      $override_page_by_entity = 'page--entity--' . $page_data['meta']['entity_type'] . '.tpl.php';
+      $theme_template_path = $site_data['front_theme'] . '/templates/';
 
-      $override_page_content = 'page--' . $page_data['meta']['path'] . '.tpl.php';
-      $override_page_type = 'page--type--' . $page_data['meta']['category'] . '.tpl.php';
-
-      if (is_file($site_data['front_theme'] . '/templates/' . $override_page_content)) {
+      // First check if there is a path override.
+      if (is_file($theme_template_path . $override_page_by_path)) {
         $page_data['template_type'] = 'file';
-        $page_content = $site_data['front_theme'] . '/templates/' . $override_page_content;
+        $page_content = $theme_template_path . $override_page_by_path;
       } else {
         
-        if (is_file($site_data['front_theme'] . '/templates/' . $override_page_type)) {
+        // If no path override is set, then check by category type.
+        if (is_file($theme_template_path . $override_page_by_category)) {
           $page_data['template_type'] = 'file';
-          $page_content = $site_data['front_theme'] . '/templates/' . $override_page_type;
+          $page_content = $theme_template_path . $override_page_by_category;
+        } else {
+          
+          // If not category ovveride is set, then check by entity type. Otherwise load defualt. 
+          if (is_file($theme_template_path . $override_page_by_entity)) {
+            $page_data['template_type'] = 'file';
+            $page_content = $theme_template_path . $override_page_by_entity;
+          }
         }
-      
       }
 
       http_response_code(200);
@@ -82,12 +89,12 @@ foreach ($content_list_data as $list_page) {
     $query = new Route();
 
     $path_data = $site_info->getSiteContentListData();
-
     $path = array();
     foreach ($path_data as $item) {
       if ($item['path'] == $query->getPathName()) {
         $path['name'] = $item['name'];
         $path['path'] = $item['path'];
+        $path['description'] = $item['description'];
       }
     }
 
@@ -102,7 +109,8 @@ foreach ($content_list_data as $list_page) {
     $page_data['template_type'] = 'list';
     $page_data['title'] = ucfirst($path['name']);
     $page_data['pagination_num'] = $query->getQuery('pg');
-    $page_data['base_url'] = $theme->baseUrl() . $path['path'] .'?';
+    $page_data['base_url'] = SiteInfo::baseUrl() . $path['path'] .'?';
+    $page_data['cat_description'] = $path['description'];
   
     // Load override template.
     $override_template = 'page--' . $path['path'] . '.tpl.php';
@@ -135,9 +143,8 @@ $tags->setQueryPath('tags', function() {
   $tag_results = array();
   foreach ($raw_data as $tag) {
 
-    $tags = strtolower($tag['meta']['tags']);
-    $query_term = strtolower($query->getQuery('q'));
-
+    $tags = $tag['meta']['tags'];
+    $query_term = $query->getQuery('q');
     if(strpos($tags, $query_term) !== false) {
      $tag_results[] = $tag;
     }
@@ -145,13 +152,13 @@ $tags->setQueryPath('tags', function() {
 
   // If tag results are not empty render page.
   if (!empty($tag_results)) {
-    $page_data['list'] = $tag_data->paginate($tag_results);
+    $page_data['items'] = $tag_data->paginate($tag_results);
 
     $page_data['template_type'] = 'list';
-    $page_data['base_url'] = $template->baseUrl() . 'tags?q=' . $query->getQuery('q');
+    $page_data['base_url'] = SiteInfo::baseUrl() . 'tags?q=' . $query->getQuery('q');
     $page_data['pagination_num'] = $query->getQuery('pg');
-    $page_data['title'] = 'Tag: ' . ucwords($query->getQuery('q'));
-
+    $page_data['title'] = $template->decodeTag($query->getQuery('q'));
+  
     include ($template->loadTheme('main'));
   }
   else {

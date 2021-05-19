@@ -1,6 +1,7 @@
 <html>
 <head>
   <title>TypeTote - Admin</title>
+  <?php renderAssetsCSS($page_data); ?>
   <link rel="stylesheet" type="text/css" href="<?php echo SiteInfo::baseUrl(); ?>_modules/admin/_theme/css/style.css">
 </head>
 <body>
@@ -39,6 +40,8 @@
       <br>
       Version: <b><?php include ('version.txt'); ?></b>
     </div>
+
+   
   
   <?php include('_modules/admin/_templates/session-notice.tpl.php'); ?>
 </div>
@@ -65,6 +68,7 @@
     }
   </style>
 <?php } ?>
+<?php renderAssetsJS($page_data); ?>
 
 </body>
 </html>

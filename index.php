@@ -16,31 +16,12 @@ if (is_file('_data/settings/site_info.json')) {
   // Load Site Info:
   $site = new SiteInfo();
   $site_data = $site->getSiteData();
-  $site_data['session'] = md5($site->baseUrl());
+  $site_data['session'] = md5($site->baseUrl()); 
 
   // Boostrap modules & Hookss
   include_once('_app/_bootstrap.php');
 
-  // 404 Page
-  if ((http_response_code() == '404')) {
-
-    $page_data['status'] = '404';
-    $override_template = 'page--404.tpl.php';
-    $override_file = $site_data['front_theme'] . '/' . $override_template;
-    if (is_file($override_file)) {
-      $page_content = $override_file;
-    }
-
-    $theme = new Template();
-    include ($theme->loadTheme('main'));
-  }
-
-  // Dev Mode, to enable create a file called dev.php in the website root.
   if (file_exists('dev.php')) {
-
-    ini_set('display_errors', 1);
-    ini_set('display_startup_errors', 1);
-    error_reporting(E_ALL);
 
     if(strpos($_SERVER['REQUEST_URI'], 'login') !== false){
 
@@ -60,12 +41,26 @@ if (is_file('_data/settings/site_info.json')) {
       }
       </style>';
     
-      if (isset($_SESSION[$site_data['session']]['auth']['token'])) {
+      if (isset($site_data) && isset($_SESSION[$site_data['session']]['auth']['token'])) {
         echo '<div class="dev-mode">';
         echo '<div>Login Code:<br>' . $_SESSION[$site_data['session']]['auth']['token'] . '</div>';
         echo '<div>' . $dev_msg . '</div></div>';
       }
     }
+  }
+
+  // 404 Page
+  if ((http_response_code() == '404')) {
+
+    $page_data['status'] = '404';
+    $override_template = 'page--404.tpl.php';
+    $override_file = $site_data['front_theme'] . '/' . $override_template;
+    if (is_file($override_file)) {
+      $page_content = $override_file;
+    }
+
+    $theme = new Template();
+    include ($theme->loadTheme('main'));
   }
 
   // Show admin bar to the top of the page when user is logged in.
@@ -89,7 +84,5 @@ if (is_file('_data/settings/site_info.json')) {
   include($install);
   header('Location:' . SiteInfo::baseUrl() . 'install.php');
 }
-
-
 
 ?>

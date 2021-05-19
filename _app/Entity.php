@@ -110,16 +110,22 @@ class Entity
       $entity_file_name = $data['meta']['entity_id'];
       $entity_file_path = $this->entity_dir . '/' . $entity_file_name . '.json';
 
-      // Set summery if not set.
-      if (empty($data['summery'])) {
-        $summery = strip_tags($data['body']);
-        ltrim($summery);
-        if (strlen($summery) <= 125) {
-          $data['summery'] = $summery;
+      // Set summary if not set.
+      if (empty($data['summary'])) {
+        $summary = strip_tags($data['body']);
+        ltrim($summary);
+        if (strlen($summary) <= 125) {
+          $data['summary'] = $summary;
         } else {
-          $data['summery'] = substr($summery, 0, 125);
+          $data['summary'] = substr($summary, 0, 125);
         }
       }
+
+      // Save Tags:
+      // Here we change spaces to dashes, re-add spaces for comma explode, make to lowerstring.
+      $tags = str_replace(' ', '-', $data['meta']['tags']);
+      $tags = str_replace(',-', ', ', $tags);
+      $data['meta']['tags'] = strtolower($tags);
 
       // Reset the blog path to ensure its updated and appended with blog dir name.
       if ($data['meta']['entity_type'] == 'post') {
@@ -138,6 +144,7 @@ class Entity
         // Set path, if non-set make from title. (need to add clause for blog).
         if (empty($data['meta']['path'])) {
           $path = str_replace(' ', '-', $data['title']);
+          $path = preg_replace('/[^A-Za-z0-9\-]/', '', $path);
           $path = strtolower($path);
 
           // If type is post, prepend with blog (TODO: will need to be blog name)
@@ -344,8 +351,7 @@ class Entity
   /**
    * Used to create a defualt setting file. 
    */
-  public function saveSetting($file_name, $data)
-  {
+  public function saveSetting($file_name, $data) {
     $this->makeDirectory($this->settings_dir);
     $settings_file = $this->settings_dir . '/' . $file_name;
     $this->createFile($settings_file, $data);
@@ -413,7 +419,7 @@ class Entity
       $item = $rss->addChild('item');
       $item->addChild('title', $i['title']);
       $item->addChild('link', SiteInfo::baseUrl() . $i['meta']['path']);
-      $item->addChild('description', $i['summery']);
+      $item->addChild('description', $i['summary']);
     }
 
     // Save File
