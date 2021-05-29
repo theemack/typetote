@@ -6,7 +6,7 @@ http_response_code(404);
 include_once('_app/_autoload.php');
 
 // Set install path.
-if (is_file('_data/settings/site_info.json')) {
+if (is_file(SiteInfo::getDataDir() . '/settings/site_info.json')) {
   
   // If install file exisits remove it.
   if (is_file('install.php')) {
@@ -21,6 +21,7 @@ if (is_file('_data/settings/site_info.json')) {
   // Boostrap modules & Hookss
   include_once('_app/_bootstrap.php');
 
+  // Show error page.
   if (file_exists('dev.php')) {
 
     if(strpos($_SERVER['REQUEST_URI'], 'login') !== false){

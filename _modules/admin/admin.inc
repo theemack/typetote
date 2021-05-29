@@ -15,28 +15,28 @@ $admin_content->setPath('admin', function() {
   if ($query->getQuery('q') == 'posts') {
     
     $page_data['sort'] = 'Post';
-    if (is_file('_data/manifests/content_manifests.json')) {
+    if (is_file(SiteInfo::getDataDir() . '/manifests/content_manifests.json')) {
       $options = array('type' => 'post');
-      $page_data['items'] = $content->paginate($content->renderEntityList('_data/manifests/content_manifests.json', $options));
+      $page_data['items'] = $content->paginate($content->renderEntityList(SiteInfo::getDataDir() . '/manifests/content_manifests.json', $options));
     }
 
   } else if ($query->getQuery('q') == 'pages') {
     
     $page_data['sort'] = 'Page';
-    if (is_file('_data/manifests/content_manifests.json')) {
+    if (is_file(SiteInfo::getDataDir() . '/manifests/content_manifests.json')) {
       $options = array('type' => 'page');
-      $page_data['items'] = $content->paginate($content->renderEntityList('_data/manifests/content_manifests.json', $options)); 
+      $page_data['items'] = $content->paginate($content->renderEntityList(SiteInfo::getDataDir() . '/manifests/content_manifests.json', $options)); 
     }
 
   } else if ($query->getQuery('q') == 'blocks') {
     
     $page_data['sort'] = 'Block';
-    if (is_file('_data/manifests/block_manifests.json')) {
-      $page_data['items'] = $content->paginate($content->renderEntityList('_data/manifests/block_manifests.json'));
+    if (is_file(SiteInfo::getDataDir() . '/manifests/block_manifests.json')) {
+      $page_data['items'] = $content->paginate($content->renderEntityList(SiteInfo::getDataDir() . '/manifests/block_manifests.json'));
     }
   
   } else { 
-    $page_data['items'] = $content->paginate($content->renderEntityList('_data/manifests/content_manifests.json'));
+    $page_data['items'] = $content->paginate($content->renderEntityList(SiteInfo::getDataDir() . '/manifests/content_manifests.json'));
     $page_data['sort'] = 'All';
   }
 
@@ -112,7 +112,7 @@ $admin_delete->setQueryPath('admin/delete', function() {
     // Media, check if this is a possible media asset. 
     $media_check = basename($_SERVER['REQUEST_URI']);
     $media_check = str_replace('delete?q=', '', $media_check);
-    if (is_file('_data/files/'. $media_check)) {
+    if (is_file(SiteInfo::getDataDir() . '/files/'. $media_check)) {
       $content->deleteEntity($media_check);
       $path->goToPath('admin/media');
     }
@@ -141,59 +141,6 @@ $admin_delete->setQueryPath('admin/delete', function() {
   include ($template->loadTheme('admin'));
 });
 
-// When user vists: /admin/media (main media page)
-$admin_media = new Route();
-$admin_media->setPath('admin/media', function() {
-
-  $file = new Media();
-  $template = new Template();
-  $page_content = $template->renderTemplateFile('_modules/admin', 'media-browser.tpl.php');
-  $page_data['files'] = $file->browse_files();
-  $page_data['url'] = SiteInfo::baseUrl();
-  $page_data['embeded'] = 'no';
-  $page_data['assets'] = array(
-    '_modules/admin/js/file.js'
-  );
-
-  include ($template->loadTheme('admin'));
-});
-
-// Media browser
-$file_upload = new Route();
-$file_upload->setPath('admin/media/browser', function() {
-
-  $file = new Media();
-  $template = new Template();
-  $page_content = $template->renderTemplateFile('_modules/admin', 'media-browser.tpl.php');
-  $page_data['files'] = $file->browse_files();
-  $page_data['url'] = SiteInfo::baseUrl();
-  $page_data['embeded'] = 'yes';
-  $page_data['assets'] = array(
-    '_modules/admin/js/file.js'
-  );
-
-  $page_data['utility_page'] = 'yes';
-  include ($template->loadTheme('admin'));
-});
-
-// When user vists: /admin/media/upload
-$file_upload = new Route();
-$file_upload->setPath('admin/media/upload', function() {
-
-  if ($_SERVER['REQUEST_METHOD'] == 'POST' ) {
-    $file = new Media();
-    echo ($file->upload());
-  };
-
-  $template = new Template();
-  $page_content = $template->renderTemplateFile('_modules/admin', 'media-upload.tpl.php');
-  $page_data['utility_page'] = 'yes';
-  $page_data['assets'] = array(
-    '_modules/admin/js/file.js'
-  );
-  include ($template->loadTheme('admin'));
-});
-
 // When user visits: /admin/category
 $admin_category = new Route();
 $admin_category->setPath('admin/category', function() {
@@ -206,7 +153,7 @@ $admin_category->setPath('admin/category', function() {
     header("Refresh:0");
   }
   
-  $page_data['categroy'] = $category->readDataFile('_data/settings/category.json');
+  $page_data['categroy'] = $category->readDataFile(SiteInfo::getDataDir() . '/settings/category.json');
   $page_data['assets'] = array(
     '_modules/admin/js/category.js'
   );
@@ -230,7 +177,7 @@ $admin_menus->setPath('admin/menu', function() {
     header("Refresh:0");
   }
 
-  $page_data['menu'] = $menu->readDataFile('_data/settings/menu.json');
+  $page_data['menu'] = $menu->readDataFile(SiteInfo::getDataDir() . '/settings/menu.json');
   $page_data['assets'] = array(
     '_modules/admin/js/menu.js'
   );
@@ -254,7 +201,7 @@ $site_banner->setPath('admin/site-banner', function() {
     header("Refresh:0");
   }
 
-  $page_data = $site_banner->readDataFile('_data/settings/site_banner.json');
+  $page_data = $site_banner->readDataFile(SiteInfo::getDataDir() . '/settings/site_banner.json');
   $page_data['assets'] = array(
     '_modules/admin/js/quill.min.js',
     '_modules/admin/_theme/css/quill.snow.css',
@@ -271,69 +218,13 @@ $site_banner->setPath('admin/site-banner', function() {
   include ($template->loadTheme('admin'));
 });
 
-// When user visits: /admin/users
-$users = new Route();
-$users->setPath('admin/users', function() {
+// Load Admin Media Routes
+include '_inc/media.inc';
 
-  $category = new Entity();
-  if ($_SERVER['REQUEST_METHOD'] == 'POST' ) {
-    $menu_data = $_POST['user'];
-    $menu_data = array_map( 'strtolower', $menu_data ); 
-    $category->saveSetting('users.json', $menu_data);
-    header("Refresh:0");
-  }
-  $template = new Template();
-  // $template->renderModuleJs('admin/js/user.js');
-  $page_data['users'] = $category->readDataFile('_data/settings/users.json');
-  $page_data['assets'] = array(
-    '_modules/admin/js/user.js'
-  );
-  
-  $template = new Template();
-  $page_content = $template->renderTemplateFile('_modules/admin', 'users.tpl.php');
-  include ($template->loadTheme('admin'));
-});
+// When user visits: /admin/users
+include '_inc/users.inc';
 
 // When user vists: /admin/settings
-$admin_settings = new Route();
-$admin_settings->setPath('admin/settings', function() {
-
-  $site_info = new Entity();
-  if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
-    $site_info_data = $_POST;
-
-    // Format to lowercase / Machine Names
-    $site_info_data['admin_email'] = strtolower($_POST['admin_email']);
-    $site_info_data['blog_name'] = $_POST['blog_name'];
-    $blog_path = strtolower($site_info_data['blog_name']);
-    $site_info_data['sec_key_1'] = $_POST['sec_key_1'];
-    $site_info_data['sec_key_2'] = $_POST['sec_key_2'];
-    $site_info_data['blog_path'] = str_replace(' ', '-', $blog_path);
-
-    // Add logic here if security questions were changed. Auto log out the user.
-    $site_info->saveSetting('site_info.json', $site_info_data);
-    header("Refresh:0");
-  }
-
-  $template = new Template();
-  $page_content = $template->renderTemplateFile('_modules/admin', 'site-settings-form.tpl.php');
-  $page_data = $site_info->readDataFile('_data/settings/site_info.json');
-
-  $custom_themes = array();
-  $themes = preg_grep('/^([^.])/', scandir('_themes'));
-  foreach ($themes as $theme) {
-    $i['name'] = $theme;
-    $i['path'] = '_themes/' . $theme;
-    $custom_themes[] = $i;
-  }
-
-  $core_themes = array(
-    array('name' => 'motek', 'path' => '_modules/core/_themes/motek'),
-    array('name' => 'tundra', 'path' => '_modules/core/_themes/tundra')
-  );
-
-  $page_data['themes'] = array_merge($core_themes, $custom_themes);
-  include ($template->loadTheme('admin'));
-});
+include '_inc/settings.inc';
 
 ?>

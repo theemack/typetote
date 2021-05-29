@@ -27,7 +27,7 @@ if ($front_page->getPath() == '') {
 $path = new Route();
 $template = new Template();
 $content = new Entity();
-$manifest = $content->readDataFile('_data/manifests/content_manifests.json');
+$manifest = $content->readDataFile(SiteInfo::getDataDir() . '/manifests/content_manifests.json');
 
 if (!empty($manifest)){
   foreach ($manifest as $item)
@@ -94,7 +94,10 @@ foreach ($content_list_data as $list_page) {
       if ($item['path'] == $query->getPathName()) {
         $path['name'] = $item['name'];
         $path['path'] = $item['path'];
-        $path['description'] = $item['description'];
+
+        if (isset($item['description'])){
+          $path['description'] = $item['description'];
+        }
       }
     }
 
@@ -104,14 +107,18 @@ foreach ($content_list_data as $list_page) {
       'category' => $path['path'],
     );
     
-    $content_list = $content->renderEntityList('_data/manifests/content_manifests.json', $options);
+    $content_list = $content->renderEntityList(SiteInfo::getDataDir() . '/manifests/content_manifests.json', $options);
     $page_data['items'] = $content->paginate($content_list);
     $page_data['template_type'] = 'list';
     $page_data['title'] = ucfirst($path['name']);
     $page_data['pagination_num'] = $query->getQuery('pg');
     $page_data['base_url'] = SiteInfo::baseUrl() . $path['path'] .'?';
-    $page_data['cat_description'] = $path['description'];
-  
+
+    if (isset($path['description'])){
+
+      $page_data['cat_description'] = $path['description'];
+    };
+    
     // Load override template.
     $override_template = 'page--' . $path['path'] . '.tpl.php';
     $override_file = $site_data['front_theme'] . '/templates/' . $override_template;
@@ -138,7 +145,7 @@ $tags->setQueryPath('tags', function() {
   $options = array(
     'status' => 'published'
   );
-  $raw_data = $tag_data->renderEntityList('_data/manifests/content_manifests.json',  $options);
+  $raw_data = $tag_data->renderEntityList(SiteInfo::getDataDir() . '/manifests/content_manifests.json',  $options);
 
   $tag_results = array();
   foreach ($raw_data as $tag) {
@@ -164,6 +171,24 @@ $tags->setQueryPath('tags', function() {
   else {
     http_response_code(404);
   }
+});
+
+// Render Sitemap
+$sitemap = new Route();
+$sitemap->setPath('sitemap', function() {
+
+  header('Content-Type: text/xml');
+  include SiteInfo::getDataDir() . '/sitemap.xml';
+
+});
+
+// Render RSS feed
+$rss = new Route();
+$rss->setPath('rss', function() {
+
+  header('Content-Type: text/xml');
+  include SiteInfo::getDataDir() . '/rss.xml';
+
 });
 
 ?>
