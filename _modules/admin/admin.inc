@@ -219,21 +219,20 @@ $site_banner->setPath('admin/site-banner', function() {
 });
 
 // Load Admin Media Routes
-include '_inc/media.inc';
+if (file_exists(__DIR__ . '/_inc/media.inc')) {
+  include '_inc/media.inc';
+} 
 
 // When user visits: /admin/users
-include '_inc/users.inc';
+if (file_exists(__DIR__ . '/_inc/users.inc')) {
+  include '_inc/users.inc';
+}
 
 // When user vists: /admin/settings
-include '_inc/settings.inc';
+if (file_exists(__DIR__ . '/_inc/settings.inc')) {
+  include '_inc/settings.inc';
+}
 
 
-$admin_content = new Route();
-$admin_content->setPath('admin/logout', function() {
-
-  $logout = new Auth();
-  $logout->logout();
-
-});
 
 ?>
