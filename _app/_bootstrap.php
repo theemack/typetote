@@ -26,7 +26,7 @@ $extensions = '_extensions';
 load_files($extensions, 'hooks');
 load_files($extensions, 'ext');
 
-if (!isset(SiteInfo::getSiteData()['license'])) {
+if (!isset(SiteInfo::getSiteData()['license']) or SiteInfo::getSiteData()['license'] == null) {
   include('_llm.php');
 }
 
