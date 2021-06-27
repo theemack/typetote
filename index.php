@@ -63,6 +63,7 @@ if (is_file(SiteInfo::getDataDir() . '/settings/site_info.json')) {
 
     $theme = new Template();
     include ($theme->loadTheme('main'));
+    
   }
 
   // Show admin bar to the top of the page when user is logged in.
@@ -87,4 +88,6 @@ if (is_file(SiteInfo::getDataDir() . '/settings/site_info.json')) {
   header('Location:' . SiteInfo::baseUrl() . 'install.php');
 }
 
+
 ?>
+

@@ -3,15 +3,6 @@
 class Template {
 
   public $theme;
-  // public $page_content;
-
-  // Set base Url
-  // public function baseUrl()
-  // {
-  //   $dir = getcwd();
-  //   $base_dir = substr($dir, strrpos($dir, '/') + 1);
-  //   return '//' . $_SERVER['SERVER_NAME'] . '/' . $base_dir . '/';
-  // }
 
   // Basic method to define and set the type of template to load.
   public function loadTheme($var) {

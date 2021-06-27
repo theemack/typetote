@@ -5,6 +5,8 @@
 $theme = new Template();
 $site_data = SiteInfo::getSiteData();
 
+// 
+
 // Front Page.
 $front_page = new Route();
 if ($front_page->getPath() == '') {
@@ -190,5 +192,6 @@ $rss->setPath('rss', function() {
   include SiteInfo::getDataDir() . '/rss.xml';
 
 });
+
 
 ?>

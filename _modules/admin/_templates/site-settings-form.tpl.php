@@ -101,6 +101,19 @@
     <label class="ie-form" for="headless"> Enable headless mode</label><br>
     </div>
   </details>
+  <br>
+
+
+  <div class="page-well">
+  <details>
+    <summary><b>License</b></summary>
+    <br>
+    <p>To remove the attribution on the bottom of the page please obtain a license!</p>
+    <label for="license">License Key</label>
+    <input id="license" type="text" name="license" placeholder="Enter your license key." value="<?php if (isset($page_data['license'])) { echo $page_data['license']; } ?>">
+    </div>
+  </details>
+
   <?php } ?>
 
   <div class="form-actions">

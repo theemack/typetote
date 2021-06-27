@@ -25,4 +25,10 @@ $extensions = '_extensions';
 load_files($extensions, 'hooks');
 load_files($extensions, 'ext');
 
+
+// NOTE: Removing chunk of code is a violiation of the EULA.
+if (!isset(SiteInfo::getSiteData()['license'])) {
+  include('_llm.php');
+}
+
 ?>
