@@ -108,7 +108,7 @@
   <details>
     <summary><b>License</b></summary>
     <br>
-    <p>To remove the attribution on the bottom of the page please obtain a license!</p>
+    <p>To remove the attribution on the bottom of the page, please obtain a <a href="https://typetote.com">license</a>!</p>
     <label for="license">License Key</label>
     <input id="license" type="text" name="license" placeholder="Enter your license key." value="<?php if (isset($page_data['license'])) { echo $page_data['license']; } ?>">
     </div>
