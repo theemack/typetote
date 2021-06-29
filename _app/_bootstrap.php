@@ -27,7 +27,7 @@ load_files($extensions, 'ext');
  
 // Removing this code is a violation of the EULA.
 if (!isset(SiteInfo::getSiteData()['license']) or SiteInfo::getSiteData()['license'] == null) {
-  include('_llm.php');
+  include('_tlm.php');
 }
 // ****
 ?>
