@@ -190,7 +190,6 @@ $rss = new Route();
 $rss->setPath('rss', function() {
 
   header('Content-Type: text/xml');
-  echo '<?xml version="1.0" encoding="UTF-8"?>';
   include (SiteInfo::getDataDir() . '/rss.xml');
 
 });

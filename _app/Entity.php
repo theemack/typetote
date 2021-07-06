@@ -382,7 +382,7 @@ class Entity
 
   // Used to create a static sitemap after content manifest is generated.
   public function createSiteMap($src) {
-    $xml_header = '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"></urlset>';
+    $xml_header = '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"></urlset>';
     $xml = new SimpleXMLElement($xml_header);
     
     // Add homepage
@@ -411,15 +411,16 @@ class Entity
       }
     }
 
+    $data = str_replace('<?xml version="1.0" encoding="UTF-8"?>', '', $xml->asXML());
     $file = fopen(SiteInfo::getDataDir() . '/sitemap.xml', 'w+');
-    fwrite($file ,$xml->asXML()); 
+    fwrite($file , $data); 
     fclose($file);
   }
 
   public function createRSS($manifest)
   {
     $site_data = $this->readDataFile(SiteInfo::getDataDir() . '/settings/site_info.json');
-    $rss_header = '<rss></rss>';
+    $rss_header = '<?xml version="1.0" encoding="UTF-8"?><rss></rss>';
     $rss = new SimpleXMLElement($rss_header);
     $rss->addAttribute('version', '2.0');
     
@@ -441,6 +442,7 @@ class Entity
     }
 
     // Save File
+    $data = str_replace('<?xml version="1.0" encoding="UTF-8"?>', '', $rss->asXML());
     $file = fopen(SiteInfo::getDataDir() . '/rss.xml', 'w+');
     fwrite($file ,$rss->asXML()); 
     fclose($file);
