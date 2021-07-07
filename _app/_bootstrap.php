@@ -28,8 +28,18 @@ load_files($extensions, 'ext');
 // Removing this code is a violation of the EULA.
 if (!isset(SiteInfo::getSiteData()['license']) or SiteInfo::getSiteData()['license'] == null) {
   $route = new Route();
-  if (!$route->getPath('sitemap') or !$route->getPath('rss')) {
-    include('_tlm.php');
+
+  // Paths to exclude.
+  $tlm_paths = [
+    'sitemap',
+    'rss',
+    'admin'
+  ];
+
+  foreach ($tlm_paths as $path) {
+    if ($route->getPath() !== $path) {
+      include('_tlm.php');
+    }
   }
 }
 // ****

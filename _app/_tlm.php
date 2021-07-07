@@ -1,7 +1,7 @@
 <?php // NOTE: Removing this file is a violiation of the EULA. ?>
 
 <script>
-  if (window.location.href.indexOf("admin") < 1) {
+  // if (window.location.href.indexOf("admin") < 1) {
     const footer = document.getElementsByTagName("footer")[0];
     const content = 'Proudly built with <a href="https://typetote.com">TypeTote</a>.';
     var credit = document.createElement("div");
@@ -17,7 +17,7 @@
     } else  {
       document.body.appendChild(credit);
     }
-}
+// }
 </script>
 <style>
   .cc {display: block !important; }
