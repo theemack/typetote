@@ -4,16 +4,20 @@
   if($menu['path'] == '/') {
     $menu['path'] = str_replace('/', '', $menu['path']);
   }
-  $front_page = new Route();
+  $path = new Route();
   ?>
 
-  <?php if ($front_page->getPath() == '' and strpos($menu['path'], '#') !== false) { ?>
+  <?php if ($path->getPath() == '' and strpos($menu['path'], '#') !== false) { ?>
 
     <li><a href="<?php echo $menu['path']; ?>" id="menu-<?php echo str_replace('#', '', $menu['path']);?>-link"><?php echo $menu['name']; ?></a></li>
 
   <?php } else if ( strpos($menu['path'], 'http') !== false) { ?>
 
     <li><a href="<?php echo $menu['path']; ?>"><?php echo $menu['name']; ?></a></li>
+
+  <?php } else if ( strpos($menu['path'], '@') !== false) { ?>
+
+    <li><a href="mailto:<?php echo $menu['path']; ?>"><?php echo $menu['name']; ?></a></li>
 
   <?php } else { ?>
 

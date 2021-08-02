@@ -39,7 +39,7 @@ if (isset($page_data['items']['content'][0])) {
     <?php } ?>
   <?php } else { ?>
 
-  <b>No content has been created yet.</b>
+  <div class="no-content-msg">No content has been created yet.</div>
 
 <?php } ?>
 </div>

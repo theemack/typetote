@@ -189,7 +189,7 @@ function render_breadcrumbs($homelink = null) {
   // Only show if not on homepage.
   if ($page->getPath() !== '' xor http_response_code() == '404' xor strpos($page->getPath(), 'tag') !== false) {
 
-    echo '<br><div class="breadcrumbs"><ol>';
+    echo '<div class="breadcrumbs"><ol>';
       foreach ($links as $key => $link) {
 
         $link_text = str_replace('-', ' ', $link);

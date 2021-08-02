@@ -36,11 +36,10 @@ if (!isset(SiteInfo::getSiteData()['license']) or SiteInfo::getSiteData()['licen
     'admin'
   ];
 
-  foreach ($tlm_paths as $path) {
-    if ($route->getPath() !== $path) {
-      include('_tlm.php');
-    }
+  if (!in_array($route->getPath(), $tlm_paths)) {
+    include('_tlm.php');
   }
+  
 }
 // ****
 ?>
