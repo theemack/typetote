@@ -119,9 +119,15 @@ function renderBodyClass() {
 }
 
 // Render title for template.
-function render_siteTitle($page_data) {
+function render_siteTitle($page_data, $seperator = null) {
   global $site_data;
-  if(isset($page_data['title'])) { echo $page_data['title'] . ' - '; } else { if( isset($site_data['site_slogan'])){ echo $site_data['site_slogan'] . ' - '; } }?><?php echo $site_data['site_name'];
+
+  if (!empty($seperator)) {
+    $sep = ' ' . $seperator . ' ';
+  } else {
+    $sep = ' - ';
+  }
+  if(isset($page_data['title'])) { echo $page_data['title'] . $sep; } else { if( isset($site_data['site_slogan'])){ echo $site_data['site_slogan'] . $sep; } }?><?php echo $site_data['site_name'];
 }
 
 // Render site Description

@@ -147,9 +147,9 @@ $admin_category->setPath('admin/category', function() {
   
   $category = new Entity();
   if ($_SERVER['REQUEST_METHOD'] == 'POST' ) {
-    $menu_data = $_POST['cat'];
-    asort($menu_data);
-    $category->saveSetting('category.json', $menu_data);
+    $category_data = $_POST['cat'];
+    asort($category_data);
+    $category->saveSetting('category.json', $category_data);
     header("Refresh:0");
   }
   
