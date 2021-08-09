@@ -173,10 +173,13 @@ function render_breadcrumbs($homelink = null) {
   $site_info =  new SiteInfo();
   $dir = basename(dirname($_SERVER['PHP_SELF']));
 
+  $url = strip_tags($_SERVER['REQUEST_URI']);
+  $url = htmlspecialchars($url);
+
   if ($dir) {
-    $breadcrumbs = ltrim($_SERVER['REQUEST_URI'], '/');
+    $breadcrumbs = ltrim($url, '/');
   } else {
-    $breadcrumbs = $_SERVER['REQUEST_URI'];
+    $breadcrumbs = $url;
   }
   
   $links = explode('/', $breadcrumbs);
@@ -197,6 +200,9 @@ function render_breadcrumbs($homelink = null) {
 
     echo '<div class="breadcrumbs"><ol>';
       foreach ($links as $key => $link) {
+
+        // Remove traces of querry paths (i.e. facebook). 
+        $link = preg_replace('/\?.*/', '', $link);
 
         $link_text = str_replace('-', ' ', $link);
 
