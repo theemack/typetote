@@ -5,6 +5,8 @@
 $theme = new Template();
 $site_data = SiteInfo::getSiteData();
 
+// 
+
 // Front Page.
 $front_page = new Route();
 if ($front_page->getPath() == '') {
@@ -178,7 +180,8 @@ $sitemap = new Route();
 $sitemap->setPath('sitemap', function() {
 
   header('Content-Type: text/xml');
-  include SiteInfo::getDataDir() . '/sitemap.xml';
+  echo '<?xml version="1.0" encoding="UTF-8"?>';
+  include (SiteInfo::getDataDir() . '/sitemap.xml');
 
 });
 
@@ -187,8 +190,9 @@ $rss = new Route();
 $rss->setPath('rss', function() {
 
   header('Content-Type: text/xml');
-  include SiteInfo::getDataDir() . '/rss.xml';
+  include (SiteInfo::getDataDir() . '/rss.xml');
 
 });
+
 
 ?>

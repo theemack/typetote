@@ -28,14 +28,6 @@
       <textarea name="cat[0][description]" placeholder="Category Description"></textarea>
     </div>
 
-  <!-- <div class="cat_obj">
-    <div>
-      <input type="text" name="cat[0][name]" placeholder="Category Name" required>
-      <input type="text" name="cat[0][path]" placeholder="Category Path (Must not have any spaces i.e &quot;dinner-menu&quot;)" required>
-    </div>
-    <textarea name="cat[0][description]" placeholder="Category Description"></textarea>
-  </div> -->
-
 <?php } ?>
 </div>
 

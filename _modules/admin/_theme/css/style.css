@@ -689,3 +689,15 @@ ul.existing_tags {
 #quill_editor p {
   margin-bottom: 1rem;
 }
+
+/* Error message */
+.error-msg {
+  display: block;
+  width: 98%;
+  text-align: center;
+  padding: 1%;
+  background-color: #FFF5F1;
+  border-bottom: 1px solid #FE6D48;
+  color: #AC4319;
+  font-size: medium;
+}

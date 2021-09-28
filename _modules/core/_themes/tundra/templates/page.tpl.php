@@ -65,11 +65,7 @@
 
 <footer>
   <?php render_breadcrumbs(); ?>
-  <div class="container">
-    <div class="cc">
-      ©<?php echo date('Y') . ' '?><a href="<?php render_baseUrl(); ?>"><?php echo $site_data['site_name']; ?></a>.
-    </div>
-  </div>
+  <div class="footer--container"></div>
 </footer>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

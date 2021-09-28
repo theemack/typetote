@@ -120,6 +120,7 @@ main {
   font-size: medium;
   margin: 0;
   padding: 0;
+  margin-bottom: 1rem;
 }
 
 .breadcrumbs li {
@@ -283,7 +284,6 @@ footer {
 /* Misc */
 .cc {
   font-size: medium;
-  padding-top: 1em;
   color:gray;
 }
 

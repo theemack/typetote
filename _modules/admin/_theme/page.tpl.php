@@ -63,6 +63,11 @@
       padding: 0;
       margin: 0;
     }
+    .cc {
+      max-width: 400px;
+      margin: auto;
+      margin-top: 2rem;
+    }
   </style>
 <?php } ?>
 <?php renderAssetsJS($page_data); ?>

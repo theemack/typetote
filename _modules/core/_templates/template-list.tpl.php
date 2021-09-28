@@ -23,6 +23,9 @@ if (isset($page_data['items']['content'][0])) {
   <?php foreach ($list as $item) { ?>
 
     <article>
+      <?php if (!empty($item['meta']['featured_image'])) { ?>
+        <a href="<?php echo $item['meta']['path']; ?>"><img class="featured-img" src="<?php echo $item['meta']['featured_image'];?>" alt="Image: <?php echo $item['title']; ?>"></a>
+      <?php } ?>
       <h3><a href="<?php echo $item['meta']['path']; ?>"><?php echo $item['title']; ?></a></h3>
       <p><?php echo $item['summary']; ?></p>
       <?php renderTags($item['meta']['tags']); ?>
@@ -39,7 +42,7 @@ if (isset($page_data['items']['content'][0])) {
     <?php } ?>
   <?php } else { ?>
 
-  <b>No content has been created yet.</b>
+  <div class="no-content-msg">No content has been created yet.</div>
 
 <?php } ?>
 </div>

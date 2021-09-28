@@ -24,5 +24,22 @@ load_files($modules, 'module');
 $extensions = '_extensions';
 load_files($extensions, 'hooks');
 load_files($extensions, 'ext');
+ 
+// Removing this code is a violation of the EULA.
+if (!isset(SiteInfo::getSiteData()['license']) or SiteInfo::getSiteData()['license'] == null) {
+  $route = new Route();
 
+  // Paths to exclude.
+  $tlm_paths = [
+    'sitemap',
+    'rss',
+    'admin'
+  ];
+
+  if (!in_array($route->getPath(), $tlm_paths)) {
+    include('_tlm.php');
+  }
+  
+}
+// ****
 ?>

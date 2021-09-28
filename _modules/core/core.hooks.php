@@ -119,9 +119,15 @@ function renderBodyClass() {
 }
 
 // Render title for template.
-function render_siteTitle($page_data) {
+function render_siteTitle($page_data, $seperator = null) {
   global $site_data;
-  if(isset($page_data['title'])) { echo $page_data['title'] . ' - '; } else { if( isset($site_data['site_slogan'])){ echo $site_data['site_slogan'] . ' - '; } }?><?php echo $site_data['site_name'];
+
+  if (!empty($seperator)) {
+    $sep = ' ' . $seperator . ' ';
+  } else {
+    $sep = ' - ';
+  }
+  if(isset($page_data['title'])) { echo $page_data['title'] . $sep; } else { if( isset($site_data['site_slogan'])){ echo $site_data['site_slogan'] . $sep; } }?><?php echo $site_data['site_name'];
 }
 
 // Render site Description
@@ -167,10 +173,13 @@ function render_breadcrumbs($homelink = null) {
   $site_info =  new SiteInfo();
   $dir = basename(dirname($_SERVER['PHP_SELF']));
 
+  $url = strip_tags($_SERVER['REQUEST_URI']);
+  $url = htmlspecialchars($url);
+
   if ($dir) {
-    $breadcrumbs = ltrim($_SERVER['REQUEST_URI'], '/');
+    $breadcrumbs = ltrim($url, '/');
   } else {
-    $breadcrumbs = $_SERVER['REQUEST_URI'];
+    $breadcrumbs = $url;
   }
   
   $links = explode('/', $breadcrumbs);
@@ -189,8 +198,11 @@ function render_breadcrumbs($homelink = null) {
   // Only show if not on homepage.
   if ($page->getPath() !== '' xor http_response_code() == '404' xor strpos($page->getPath(), 'tag') !== false) {
 
-    echo '<br><div class="breadcrumbs"><ol>';
+    echo '<div class="breadcrumbs"><ol>';
       foreach ($links as $key => $link) {
+
+        // Remove traces of querry paths (i.e. facebook). 
+        $link = preg_replace('/\?.*/', '', $link);
 
         $link_text = str_replace('-', ' ', $link);
 
